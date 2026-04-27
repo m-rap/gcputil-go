@@ -11,7 +11,7 @@ import (
 	"google.golang.org/api/option"
 )
 
-func CreateDriveService(credentialsFilename string) (*drive.Service, context.Context, error) {
+func CreateDriveService(credentialsFilename string, tokenFilename string) (*drive.Service, context.Context, error) {
 	b, err := os.ReadFile(credentialsFilename)
 	if err != nil {
 		return nil, nil, fmt.Errorf("error reading credentials file: %v", err)
@@ -24,7 +24,7 @@ func CreateDriveService(credentialsFilename string) (*drive.Service, context.Con
 	if err != nil {
 		return nil, nil, fmt.Errorf("error get credentials config from json: %v", err)
 	}
-	client, err := GetClientFromTokenOrWeb("secret/token.json", credentialsConfig)
+	client, err := GetClientFromTokenOrWeb(tokenFilename, credentialsConfig)
 	if err != nil {
 		return nil, nil, fmt.Errorf("error get client from token or web: %v", err)
 	}

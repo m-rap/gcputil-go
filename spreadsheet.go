@@ -11,7 +11,7 @@ import (
 	"google.golang.org/api/sheets/v4"
 )
 
-func CreateSpredsheetService(credentialsFilename string) (*sheets.Service, context.Context, error) {
+func CreateSpredsheetService(credentialsFilename string, tokenFilename string) (*sheets.Service, context.Context, error) {
 	b, err := os.ReadFile(credentialsFilename)
 	if err != nil {
 		return nil, nil, err
@@ -21,7 +21,7 @@ func CreateSpredsheetService(credentialsFilename string) (*sheets.Service, conte
 
 	// Define the necessary scopes (Read/Write)
 	credentialsConfig, _ := google.ConfigFromJSON(b, "https://www.googleapis.com/auth/spreadsheets")
-	client, _ := GetClientFromTokenOrWeb("secret/token.json", credentialsConfig)
+	client, _ := GetClientFromTokenOrWeb(tokenFilename, credentialsConfig)
 
 	// Authenticate
 	// srv, err := sheets.NewService(sheetCtx, option.WithCredentialsFile("../secret/service-account.json"))
@@ -30,7 +30,7 @@ func CreateSpredsheetService(credentialsFilename string) (*sheets.Service, conte
 }
 
 func TestSimpleAppendSpreadsheet(spreadsheetId string, sheetName string) {
-	srv, _, err := CreateSpredsheetService("secret/credentials.json")
+	srv, _, err := CreateSpredsheetService("secret/credentials.json", "secret/spreadsheetToken.json")
 	if err != nil {
 		log.Fatalf("Unable to create spreadsheet service: %v", err)
 	}
